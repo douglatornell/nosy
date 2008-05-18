@@ -14,29 +14,34 @@ import time
 from ConfigParser import SafeConfigParser
 
 
-def checkSum():
-    """Return a long which can be used to know if any .py files have changed.
-    Only looks in the current directory.
+def checkSum(paths):
+    """Return a long which can be used to know if any .py files have
+    changed.
     """
     val = 0
-    for f in glob.glob('*.py'):
-        stats = os.stat(f)
-        val += stats[stat.ST_SIZE] + stats[stat.ST_MTIME]
-    for f in glob.glob('tests/*.py'):
-        stats = os.stat (f)
-        val += stats[stat.ST_SIZE] + stats[stat.ST_MTIME]
+    for path in paths:
+        for f in glob.iglob(path):
+            stats = os.stat(f)
+            val += stats[stat.ST_SIZE] + stats[stat.ST_MTIME]
     return val
 
 
-val=0
-config = SafeConfigParser()
-while (True):
-    if checkSum() != val:
-        val = checkSum()
-        config.readfp(open('nosy.cfg'))
-        options = config.get('nosy', 'options')
-        tests = config.get('nosy', 'tests')
-        os.system('nosetests %(options)s %(tests)s' % locals())
-    time.sleep(1)
+def main():
+    config = SafeConfigParser()
+    config.readfp(open('nosy.cfg'))
+    paths = config.get('nosy', 'paths').split()
+    val=0
+    while (True):
+        if checkSum(paths) != val:
+            val = checkSum(paths)
+            config.readfp(open('nosy.cfg'))
+            nose_opts = config.get('nosy', 'options')
+            nose_args = config.get('nosy', 'tests')
+            os.system('nosetests %(nose_opts)s %(nose_args)s' % locals())
+        time.sleep(1)
+
+
+if __name__ == '__main__':
+    main()
 
 # end of file
