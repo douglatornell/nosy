@@ -7,9 +7,11 @@ Command line and config file interfaces added by Doug Latornell,
 http://douglatornell.ca
 """
 
+from __future__ import absolute_import
 import glob
 import os
 import stat
+import sys
 import time
 from ConfigParser import SafeConfigParser, NoSectionError, NoOptionError
 from optparse import OptionParser
@@ -99,7 +101,12 @@ class Nosy(object):
 def main():
     nosy = Nosy()
     nosy.parse_cmdline()
-    nosy.run()
+    try:
+        nosy.run()
+    except KeyboardInterrupt:
+        sys.exit(130)
+    except SystemExit:
+        sys.exit(0)
 
 
 if __name__ == '__main__':
