@@ -24,7 +24,7 @@ control what files are watched, and how nose runs.
     download_url="%(djl_url)sNosy-%(version)s.tar.gz" % locals(),
     packages=find_packages(),
     install_requires=['nose'],
-    entry_points={'console_scripts':['nosy = nosy:main']}
+    entry_points={'console_scripts':['nosy = nosy.nosy:main']}
     )
 
 # end of file
