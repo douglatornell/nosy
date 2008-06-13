@@ -1,0 +1,83 @@
+======
+ Nosy
+======
+
+Authors: Jeff Winkler & Doug Latornell
+Version: 1.0
+Date: 2008-06-12
+URL: http://douglatornell.ca/software/python/nosy/
+
+
+Introduction
+============
+
+Run the nose_ test discovery and execution tool whenever a source file
+is changed.
+
+An elaborated version of Jeff Winkler's nosy_ tool that runs nose
+whenever a source file is changed.  This version has a command line
+parser added, and the capability to use a configuration file to
+control what files are watched, and how nose runs.
+
+.. _nose: http://www.somethingaboutorange.com/mrl/projects/nose/
+.. _nosy: http://jeffwinkler.net/2006/04/27/keeping-your-nose-green/
+
+
+Synopsis
+========
+
+  $ nosy -h
+
+  Usage: nosy [options]
+
+  Automatically run nose whenever source files change.
+
+  Options:
+    -h, --help            show this help message and exit
+    -c CONFIG_FILE, --config=CONFIG_FILE
+			  Configuration file path and name
+
+Configuration File
+==================
+
+Configuration file contents example:
+
+  [nosy]
+  # Paths to check for changed files; changes cause nose to be run
+  paths = *.py tests/*.py tests/nosy.cfg
+  # Command line options to pass to nose
+  options = -s
+  # Command line arguments to pass to nose; e.g. part of test suite to run
+  tests = tests/unit_tests.py
+
+Configuration file is read by a Python standard library ConfigParser
+object, so:
+
+  * Lines beginning with "#" or ";" are ignored and may be used to
+    provide comments.
+  * Entries can be in the form "name: value" or "name=value", with
+    continuations in the style of RFC 822.
+  * Leading whitespace is removed from values.
+  * Format string substitution in values is supported.
+
+The file can have 1 section `[nosy]`.  Within that section 3 options
+can be specified:
+
+  * `paths` - A whitespace separated list of paths to check for
+    changed files; wildcard characters are globbed.  Defaults to
+    `*.py`.
+  * `options` - A string of options to be passed through to nose when
+    it is executed.
+  * `tests` - A string of command line arguments to be passed through
+    to nose when it is executed.  Useful for specifying part of the
+    test suite to run.
+
+Including the configuration file in the `paths` option list allows you
+to change nose's behaviour on the fly.
+
+
+..
+   Local Variables:
+   mode: text
+   mode: auto-fill
+   End:
