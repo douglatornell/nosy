@@ -1,6 +1,8 @@
 syntax: glob
 *~
 *.pyc
+Nosy.egg-info/*
+dist/*
 
 syntax: regexp
 (.*/)?\#[^/]*\#$
