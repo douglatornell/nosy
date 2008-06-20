@@ -1,5 +1,3 @@
-from ez_setup import use_setuptools
-use_setuptools()
 from setuptools import setup, find_packages
 
 djl_url = "http://douglatornell.ca/software/python/nosy/"
