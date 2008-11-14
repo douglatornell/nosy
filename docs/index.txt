@@ -1,0 +1,111 @@
+====================================
+ Hacking on `Jeff Winkler's Nosy`__
+====================================
+
+__ nosy_
+
+I discovered Jason Pellerin's `nose`_ test discovery and execution
+tool when I started using `TurboGears`_.  My first forays into test
+driven development and automated Python testing weren't all that
+successful though.  Then `this talk`_ by `Jonathan Hartley`_, and `this
+one`_ by `Titus Brown`_ at PyCon 2008, and a lobby chat with Jonathan
+just before I left Chicago got me thinking differently, and more
+seriously about automated testing.  A few days later, the penny
+dropped, and I'm a convert!
+
+.. _nose: http://www.somethingaboutorange.com/mrl/projects/nose/
+.. _TurboGears: http://turbogears.org/
+.. _this talk: http://us.pycon.org/2008/conference/schedule/event/53/
+.. _Jonathan Hartley: http://tartley.com/
+.. _this one: http://us.pycon.org/2008/conference/schedule/event/83/
+.. _Titus Brown: http://ivory.idyll.org/blog
+
+Then I came across Jeff Winkler's `nosy`_ script that runs <code>
+nose</code> whenever a source file has changed.  I'd thought about
+doing something like that but was thinking I'd have to use some kind
+of continuous integration system like `buildbot`_, and that seemed
+like a whole lot of trouble for some little personal projects.  Jeff's
+trick for calculating a checksum for the source files makes it all
+very, *very* easy.  His `original nosy.py script`_ is less than 20
+lines long!
+
+.. _nosy: http://jeffwinkler.net/2006/04/27/keeping-your-nose-green/
+.. _buildbot: http://buildbot.net/trac
+.. _original nosy.py script: http://jeffwinkler.net/jwfiles/nosy/nosy.py
+
+I liked ``nosy`` on sight but after playing with it for a short time
+wanted to add features and flexibility.  I like to keep my test code
+in a ``tests/`` directory, separate from my project code.  I wanted
+``nose`` to run whenever I changed either the project code, or the
+test code.  I wanted to be able to change the way ``nose`` ran,
+turning options like ``-s`` and ``-v`` on or off, and specifying
+particular parts of the test suite to run via command line arguments.
+
+So, I decided that ``nosy`` needed the option of having a
+configuration file.  Of course that meant that it needed a command
+line processor.  `ConfigParser`_ and `optparse`_ from the Python
+standard library to the rescue, and we have my version of nosy::
+
+  $ nosy -h
+  Usage: nosy [options]
+
+  Automatically run nose whenever source files change.
+
+  Options:
+    -h, --help            show this help message and exit
+    -c CONFIG_FILE, --config=CONFIG_FILE
+			  Configuration file path and name
+
+.. _ConfigParser: http://docs.python.org/lib/module-ConfigParser.html
+.. _optparse: http://docs.python.org/lib/module-optparse.html
+
+You should be able to install ``nosy`` with::
+
+  $ easy_install -f http://douglatornell.ca/software/python nosy
+
+Throw a config file something like this sample::
+
+  # Sample config file for nosy
+
+  # Including this file in the paths to check allows you to change
+  # nose's behaviour on the fly.
+
+  [nosy]
+  # Paths to check for changed files; changes cause nose to be run
+  paths = *.py tests/*.py tests/nosy.cfg
+  # Command line options to pass to nose
+  options = -s
+  # Command line arguments to pass to nose; e.g. part of test suite to run
+  tests = tests/unit_tests.py
+
+  # end of file
+
+in your ``tests/`` directory as ``nosy.cfg``, launch ``nosy`` with::
+
+  $ nosy -c tests/nosy.cfg
+
+and away you go.  ``nose`` will run whenever ``*.py`` in the current
+directory, or ``tests/*.py``, or ``tests/nosy.cfg`` change.
+
+The ``paths`` option in the config file controls which files are
+monitored for changes.  Putting the config file itself in that list
+allows you to change how ``nose`` runs without having to stop and
+restart ``nosy``.
+
+``options`` are the command line options to pass to
+``nose``. Use ``-v`` to turn on verbose output, or
+``-a foo`` to run only the tests with attribute
+``foo``.
+
+``tests`` are the command line arguments to pass to
+``nose``, used to select specific tests to run.
+
+
+-----------------------------------------------------------------------------
+
+..
+   Local Variables:
+   mode: rst
+   mode: auto-fill
+   compile-command: "rst2html --title=\"Nosy Reloaded\" index.txt index.html"
+   End:
