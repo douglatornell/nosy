@@ -4,6 +4,7 @@ syntax: glob
 Nosy.egg-info/*
 build/*
 dist/*
+docs/*.html
 
 syntax: regexp
 (.*/)?\#[^/]*\#$
