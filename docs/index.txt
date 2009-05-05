@@ -20,14 +20,13 @@ dropped, and I'm a convert!
 .. _this one: http://us.pycon.org/2008/conference/schedule/event/83/
 .. _Titus Brown: http://ivory.idyll.org/blog
 
-Then I came across Jeff Winkler's `nosy`_ script that runs <code>
-nose</code> whenever a source file has changed.  I'd thought about
-doing something like that but was thinking I'd have to use some kind
-of continuous integration system like `buildbot`_, and that seemed
-like a whole lot of trouble for some little personal projects.  Jeff's
-trick for calculating a checksum for the source files makes it all
-very, *very* easy.  His `original nosy.py script`_ is less than 20
-lines long!
+Then I came across Jeff Winkler's `nosy`_ script that runs ``nose``
+whenever a source file has changed.  I'd thought about doing something
+like that but was thinking I'd have to use some kind of continuous
+integration system like `buildbot`_, and that seemed like a whole lot
+of trouble for some little personal projects.  Jeff's trick for
+calculating a checksum for the source files makes it all very, *very*
+easy.  His `original nosy.py script`_ is less than 20 lines long!
 
 .. _nosy: http://jeffwinkler.net/2006/04/27/keeping-your-nose-green/
 .. _buildbot: http://buildbot.net/trac
