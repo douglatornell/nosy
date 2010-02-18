@@ -5,13 +5,13 @@
 
 .PHONY: all docs clean
 
-all: docs egg
+all: docs sdist
 
 docs:
 	buildhtml.py docs
 
-egg:	nosy/nosy.py
-	python setup.py bdist_egg
+sdist:	nosy/nosy.py
+	python setup.py sdist
 
 clean:
 	-rm -f docs/index.html
