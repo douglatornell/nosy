@@ -27,6 +27,9 @@ class Nosy(object):
         self.config = SafeConfigParser()
         self.config.add_section('nosy')
         self.config.set('nosy', 'paths', '*.py')
+        self.config.set('nosy', 'base_path', '.')
+        self.config.set('nosy', 'glob_patterns', '')
+        self.config.set('nosy', 'exclude_patterns', '')
         self.config.set('nosy', 'options',  '')
         self.config.set('nosy', 'tests', '')
         self._build_cmdline_parser()
@@ -61,6 +64,11 @@ class Nosy(object):
                                        % locals())
         try:
             self.paths = self.config.get('nosy', 'paths').split()
+            self.base_path = self.config.get('nosy', 'base_path')
+            self.glob_patterns = self.config.get(
+                'nosy', 'glob_patterns').split()
+            self.exclude_patterns = self.config.get(
+                'nosy', 'exclude_patterns').split()
             self.nose_opts = self.config.get('nosy', 'options')
             self.nose_args = self.config.get('nosy', 'tests')
         except NoSectionError:
@@ -80,6 +88,18 @@ class Nosy(object):
             for f in glob.iglob(path):
                 stats = os.stat(f)
                 val += stats[stat.ST_SIZE] + stats[stat.ST_MTIME]
+        for root, dirs, files in os.walk(self.base_path):
+            for dir in dirs:
+                exclusions = set()
+                for p1 in self.exclude_patterns:
+                    for f in glob.iglob(os.path.join(root, dir, p1)):
+                        exclusions.add(f)
+                    for p2 in self.glob_patterns:
+                        for f in glob.iglob(os.path.join(root, dir, p2)):
+                            if f not in exclusions:
+                                stats = os.stat(f)
+                                val += (stats[stat.ST_SIZE]
+                                        + stats[stat.ST_MTIME])
         return val
 
 
