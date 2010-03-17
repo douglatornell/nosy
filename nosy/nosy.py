@@ -6,7 +6,6 @@ By Jeff Winkler, http://jeffwinkler.net
 Command line and config file interfaces added by Doug Latornell,
 http://douglatornell.ca
 """
-
 from __future__ import absolute_import
 import glob
 import os
@@ -36,9 +35,12 @@ class Nosy(object):
     def _build_cmdline_parser(self):
         description = 'Automatically run nose whenever source files change.'
         self._opt_parser = OptionParser(description=description)
-        self._opt_parser.add_option('-c', '--config',
-                                    action='store', dest='config_file',
-                                    help='Configuration file path and name')
+        defaults = dict(config_file='setup.cfg')
+        self._opt_parser.set_defaults(**defaults)
+        self._opt_parser.add_option(
+            '-c', '--config', action='store', dest='config_file',
+            help='configuration file path and name; '
+                 'defaults to %(config_file)s' % defaults)
 
 
     def parse_cmdline(self):
@@ -111,5 +113,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-# end of file
