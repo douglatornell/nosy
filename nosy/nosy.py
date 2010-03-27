@@ -14,6 +14,7 @@ import sys
 import time
 from ConfigParser import SafeConfigParser, NoSectionError, NoOptionError
 from optparse import OptionParser
+import nose
 
 
 class Nosy(object):
@@ -26,12 +27,16 @@ class Nosy(object):
         """
         self.config = SafeConfigParser()
         self.config.add_section('nosy')
-        self.config.set('nosy', 'paths', '*.py')
         self.config.set('nosy', 'base_path', '.')
         self.config.set('nosy', 'glob_patterns', '')
         self.config.set('nosy', 'exclude_patterns', '')
+        self.config.set('nosy', 'extra_paths', '')
         self.config.set('nosy', 'options',  '')
         self.config.set('nosy', 'tests', '')
+        # paths config retained for backward compatibility; use
+        # extra_paths for any files or paths that aren't easily
+        # included via base_path, glob_patterns, and exclude_patterns
+        self.config.set('nosy', 'paths', '*.py')
         self._build_cmdline_parser()
 
 
@@ -69,13 +74,19 @@ class Nosy(object):
                 'nosy', 'glob_patterns').split()
             self.exclude_patterns = self.config.get(
                 'nosy', 'exclude_patterns').split()
+            self.extra_paths = self.config.get('nosy', 'extra_paths').split()
             self.nose_opts = self.config.get('nosy', 'options')
             self.nose_args = self.config.get('nosy', 'tests')
+            # paths config retained for backward compatibility; use
+            # extra_paths for any files or paths that aren't easily
+            # included via base_path, glob_patterns, and
+            # exclude_patterns
+            self.paths = self.config.get('nosy', 'paths').split()
         except NoSectionError:
             self._opt_parser.error("nosy section not found in config file")
             sys.exit(1)
         except NoOptionError:
-            # Use default (s) from __init__()
+            # Use default(s) from __init__()
             pass
 
 
@@ -84,7 +95,7 @@ class Nosy(object):
         paths list have changed.
         """
         val = 0
-        for path in self.paths:
+        for path in self.extra_paths +  self.paths:
             for f in glob.iglob(path):
                 stats = os.stat(f)
                 val += stats[stat.ST_SIZE] + stats[stat.ST_MTIME]
@@ -111,10 +122,16 @@ class Nosy(object):
         """
         val = 0
         self._read_config()
+#         runner = nose.core.TestProgram(exit=False)
         while True:
             if self._checksum() != val:
                 self._read_config()
                 val = self._checksum()
+#                 runner.parseArgs(
+#                     ['nosetests']
+#                     + self.nose_opts.replace('\\\n', '').split()
+#                     + self.nose_args.replace('\\\n', '').split())
+#                 runner.runTests()
                 os.system('nosetests %(nose_opts)s %(nose_args)s'
                           % self.__dict__)
             time.sleep(1)

@@ -2,9 +2,9 @@
  Nosy
 ======
 
-Authors: Jeff Winkler & Doug Latornell
-Version: 1.0
-Date: 2008-06-12
+Authors: Doug Latornell
+Version: 1.1
+Date: 2010-03-16
 URL: http://douglatornell.ca/software/python/nosy/
 
 
@@ -28,25 +28,30 @@ Synopsis
 
   $ nosy -h
 
-  Usage: nosy [options]
+  Usage: nosy.py [options]
 
   Automatically run nose whenever source files change.
 
   Options:
     -h, --help            show this help message and exit
     -c CONFIG_FILE, --config=CONFIG_FILE
-			  Configuration file path and name
+                          configuration file path and name; defaults to
+                          setup.cfg
+
 
 Configuration File
 ==================
 
-Configuration file contents example:
+Configuration file section contents example::
 
   [nosy]
   # Paths to check for changed files; changes cause nose to be run
-  paths = *.py tests/*.py tests/nosy.cfg
+  base_path = ./
+  glob_patterns = *.py
+  exclude_patterns = *_flymake.*
+  extra_paths = sample.cfg
   # Command line options to pass to nose
-  options = -s
+  options = -x
   # Command line arguments to pass to nose; e.g. part of test suite to run
   tests = tests/unit_tests.py
 
@@ -60,24 +65,27 @@ object, so:
   * Leading whitespace is removed from values.
   * Format string substitution in values is supported.
 
-The file can have 1 section `[nosy]`.  Within that section 3 options
-can be specified:
+Within the `[nosy]` section 6 options may be specified:
 
-  * `paths` - A whitespace separated list of paths to check for
-    changed files; wildcard characters are globbed.  Defaults to
-    `*.py`.
+  * `base_path` - The directory in which to start walking the tree to
+    check for changed files. Defaults to `.`.
+
+  * `glob_patterns` - A whitespace separated list of shell glob
+    patterns to check for changes. Defaults to `*.py`.
+
+  * `exclude_patterns` - A whitespace separated list of shell glob
+    patterns to exclude when checking for changes. Defaults to `''`.
+
+  * `extra_paths` - A whitespace separated list of shell glob patterns
+    to add to the paths that are checked for changes. Defaults to
+    `''`.
+
   * `options` - A string of options to be passed through to nose when
     it is executed.
+
   * `tests` - A string of command line arguments to be passed through
     to nose when it is executed.  Useful for specifying part of the
     test suite to run.
 
-Including the configuration file in the `paths` option list allows you
-to change nose's behaviour on the fly.
-
-
-..
-   Local Variables:
-   mode: text
-   mode: auto-fill
-   End:
+Including the configuration file in the watched paths allows you to
+change nose's behaviour on the fly.
