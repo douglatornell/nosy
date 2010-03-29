@@ -122,18 +122,19 @@ class Nosy(object):
         """
         val = 0
         self._read_config()
-#         runner = nose.core.TestProgram(exit=False)
         while True:
             if self._checksum() != val:
-                self._read_config()
                 val = self._checksum()
-#                 runner.parseArgs(
-#                     ['nosetests']
-#                     + self.nose_opts.replace('\\\n', '').split()
-#                     + self.nose_args.replace('\\\n', '').split())
-#                 runner.runTests()
-                os.system('nosetests %(nose_opts)s %(nose_args)s'
-                          % self.__dict__)
+                self._read_config()
+                nose_config = nose.config.Config(
+                    env=os.environ, files=nose.config.all_config_files(),
+                    plugins=nose.plugins.manager.DefaultPluginManager())
+                nose.core.TestProgram(
+                    argv=['nosetests']
+                         + self.nose_opts.replace('\\\n', '').split()
+                         + self.nose_args.replace('\\\n', '').split(),
+                    config=nose_config,
+                    exit=False)
             time.sleep(1)
 
 
