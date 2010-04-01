@@ -1,15 +1,12 @@
 #!/usr/bin/env python
-"""Watch for changes in all source files. If changes, run nosetests. 
-
-By Jeff Winkler, http://jeffwinkler.net
-
-Command line and config file interfaces added by Doug Latornell,
-http://douglatornell.ca
+"""Watch for changes in a collection of source files. If changes, run
+nosetests.
 """
 from __future__ import absolute_import
 import glob
 import os
 import stat
+import subprocess
 import sys
 import time
 from ConfigParser import SafeConfigParser, NoSectionError, NoOptionError
@@ -68,7 +65,6 @@ class Nosy(object):
                 self._opt_parser.error("can't read config file:\n %(msg)s"
                                        % locals())
         try:
-            self.paths = self.config.get('nosy', 'paths').split()
             self.base_path = self.config.get('nosy', 'base_path')
             self.glob_patterns = self.config.get(
                 'nosy', 'glob_patterns').split()
@@ -95,7 +91,7 @@ class Nosy(object):
         paths list have changed.
         """
         val = 0
-        for path in self.extra_paths +  self.paths:
+        for path in self.extra_paths + self.paths:
             for f in glob.iglob(path):
                 stats = os.stat(f)
                 val += stats[stat.ST_SIZE] + stats[stat.ST_MTIME]
@@ -126,15 +122,10 @@ class Nosy(object):
             if self._checksum() != val:
                 val = self._checksum()
                 self._read_config()
-                nose_config = nose.config.Config(
-                    env=os.environ, files=nose.config.all_config_files(),
-                    plugins=nose.plugins.manager.DefaultPluginManager())
-                nose.core.TestProgram(
-                    argv=['nosetests']
-                         + self.nose_opts.replace('\\\n', '').split()
-                         + self.nose_args.replace('\\\n', '').split(),
-                    config=nose_config,
-                    exit=False)
+                subprocess.call(
+                    ['nosetests']
+                    + self.nose_opts.replace('\\\n', '').split()
+                    + self.nose_args.replace('\\\n', '').split())
             time.sleep(1)
 
 
