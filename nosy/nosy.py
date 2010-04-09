@@ -120,8 +120,8 @@ class Nosy(object):
         self._read_config()
         while True:
             if self._checksum() != val:
-                val = self._checksum()
                 self._read_config()
+                val = self._checksum()
                 subprocess.call(
                     ['nosetests']
                     + self.nose_opts.replace('\\\n', '').split()
