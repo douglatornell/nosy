@@ -2,7 +2,7 @@ from distribute_setup import use_setuptools
 use_setuptools()
 from setuptools import setup, find_packages
 
-djl_url = "http://douglatornell.ca/software/python/nosy/"
+djl_url = "http://douglatornell.ca/software/python/Nosy/"
 nosy_version = "1.1"
 version_classifiers = ['Programming Language :: Python :: %s' % version
                        for version in ['2', '2.5', '2.6', '2.7']]
@@ -32,7 +32,7 @@ is changed.
     author="Doug Latornell",
     author_email="djl@douglatornell.ca",
     url=djl_url,
-    download_url="%(djl_url)snosy-%(nosy_version)s.tar.gz" % locals(),
+    download_url="http://pypi.python.org/pypi/nosy",
     license="New BSD License",
     classifiers=version_classifiers + other_classifiers,
     packages=find_packages(),
