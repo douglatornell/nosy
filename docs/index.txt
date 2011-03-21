@@ -1,10 +1,7 @@
 .. -*- coding: utf-8 -*-
 
-====================================
- Hacking on `Jeff Winkler's Nosy`__
-====================================
-
-__ nosy_
+Hacking on Jeff Winkler's Nosy
+==============================
 
 I discovered Jason Pellerin's `nose`_ test discovery and execution
 tool when I started using `TurboGears`_.  My first forays into test
@@ -22,17 +19,16 @@ dropped, and I'm a convert!
 .. _this one: http://us.pycon.org/2008/conference/schedule/event/83/
 .. _Titus Brown: http://ivory.idyll.org/blog
 
-Then I came across Jeff Winkler's `nosy`_ script that runs ``nose``
-whenever a source file has changed.  I'd thought about doing something
-like that but was thinking I'd have to use some kind of continuous
-integration system like `buildbot`_, and that seemed like a whole lot
-of trouble for some little personal projects.  Jeff's trick for
-calculating a checksum for the source files makes it all very, *very*
-easy.  His `original nosy.py script`_ is less than 20 lines long!
+Then I came across a little script called ``nosy`` that Jeff Winkler
+described in a (now vanished) blog post in April of 2006. ``nosy`` runs
+``nose`` whenever a source file has changed.  I'd thought about doing
+something like that but was thinking I'd have to use some kind of
+continuous integration system like `buildbot`_, and that seemed like a
+whole lot of trouble for some little personal projects.  Jeff's trick
+for calculating a checksum for the source files makes it all very,
+*very* easy.  His original nosy.py script was less than 20 lines long!
 
-.. _nosy: http://jeffwinkler.net/2006/04/27/keeping-your-nose-green/
 .. _buildbot: http://buildbot.net/trac
-.. _original nosy.py script: http://jeffwinkler.net/jwfiles/nosy/nosy.py
 
 I liked ``nosy`` on sight but after playing with it for a short time
 wanted to add features and flexibility.  I like to keep my test code
@@ -48,7 +44,7 @@ line processor.  `ConfigParser`_ and `optparse`_ from the Python
 standard library to the rescue, and we have my version of nosy::
 
   $ nosy -h
-  Usage: nosy.py [options]
+  Usage: nosy [options]
 
   Automatically run nose whenever source files change.
 
@@ -63,7 +59,7 @@ standard library to the rescue, and we have my version of nosy::
 
 You should be able to install ``nosy`` with::
 
-  $ pip install -f http://douglatornell.ca/software/python nosy
+  $ pip install -U nosy
 
 Throw a section something like this into your ``setup.cfg`` file::
 
@@ -120,7 +116,7 @@ Putting the config file itself in the list of files to watch
 Changelog
 =========
 
-v1.1 xx-Apr-2010
+v1.1 21-Mar-2011
 ----------------
 
 * Configuration file now defaults to ``setup.cfg``.
@@ -138,11 +134,11 @@ v1.1 xx-Apr-2010
 
 * Changed from ``setuptools`` to ``distribute`` for packaging.
 
-* Source code and issue tracker now on bitbucket.org: http://bitbucket.org/douglatornell/xxx
+* Source code and issue tracker now on bitbucket.org: https://bitbucket.org/douglatornell/nosy
 
 * Released under New BSD License.
 
-* Released on PyPI: http:://pypi.python.org/...
+* Released on PyPI: http:://pypi.python.org/nosy
 
 
 v1.0 13-Jun-2008
@@ -150,8 +146,6 @@ v1.0 13-Jun-2008
 
 * Original release.
 
-
---------------------------------------------------------------
 
 ..
    Local Variables:

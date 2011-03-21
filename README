@@ -1,34 +1,27 @@
-======
- Nosy
-======
-
-Authors: Doug Latornell
-Version: 1.1
-Date: 2010-03-16
-URL: http://douglatornell.ca/software/python/nosy/
+Nosy
+====
 
 
 Introduction
-============
+------------
 
 Run the nose_ test discovery and execution tool whenever a source file
 is changed.
 
-An elaborated version of Jeff Winkler's nosy_ tool that runs nose
+An elaborated version of Jeff Winkler's ``nosy`` tool that runs nose
 whenever a source file is changed.  This version has a command line
 parser added, and the capability to use a configuration file to
 control what files are watched, and how nose runs.
 
 .. _nose: http://www.somethingaboutorange.com/mrl/projects/nose/
-.. _nosy: http://jeffwinkler.net/2006/04/27/keeping-your-nose-green/
 
 
 Synopsis
-========
+--------
 
   $ nosy -h
 
-  Usage: nosy.py [options]
+  Usage: nosy [options]
 
   Automatically run nose whenever source files change.
 
@@ -40,7 +33,7 @@ Synopsis
 
 
 Configuration File
-==================
+------------------
 
 Configuration file section contents example::
 

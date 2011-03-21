@@ -7,8 +7,13 @@
 
 all: docs sdist
 
-docs:
-	buildhtml.py docs
+# docs:
+# 	buildhtml.py docs
+
+docs:	docs/index.txt
+	(cd docs && \
+	rst2html.py --title="Nosy Reloaded" --generator --date \
+		index.txt index.html)
 
 sdist:	nosy/nosy.py
 	python setup.py sdist
