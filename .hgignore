@@ -1,7 +1,7 @@
 syntax: glob
 *~
 *.pyc
-Nosy.egg-info/*
+nosy.egg-info/*
 build/*
 dist/*
 docs/*.html
