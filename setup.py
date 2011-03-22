@@ -2,8 +2,6 @@ from distribute_setup import use_setuptools
 use_setuptools()
 from setuptools import setup, find_packages
 
-djl_url = "http://douglatornell.ca/software/python/Nosy/"
-nosy_version = "1.1"
 version_classifiers = ['Programming Language :: Python :: %s' % version
                        for version in ['2', '2.5', '2.6', '2.7']]
 other_classifiers = [
@@ -23,7 +21,7 @@ finally:
 
 setup(
     name="nosy",
-    version=nosy_version,
+    version="1.1",
     description="""\
 Run the nose test discovery and execution tool whenever a source file
 is changed.
@@ -31,8 +29,7 @@ is changed.
     long_description=detailed_description,
     author="Doug Latornell",
     author_email="djl@douglatornell.ca",
-    url=djl_url,
-    download_url="http://pypi.python.org/pypi/nosy",
+    url="http://douglatornell.ca/software/python/Nosy/",
     license="New BSD License",
     classifiers=version_classifiers + other_classifiers,
     packages=find_packages(),
