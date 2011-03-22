@@ -82,3 +82,7 @@ Within the `[nosy]` section 6 options may be specified:
 
 Including the configuration file in the watched paths allows you to
 change nose's behaviour on the fly.
+
+The source code and bug tracker for this package is available on Bitbucket_.
+
+.. _Bitbucket: https://bitbucket.org/douglatornell/nosy
