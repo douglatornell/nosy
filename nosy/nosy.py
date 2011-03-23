@@ -3,15 +3,14 @@
 nosetests.
 """
 from __future__ import absolute_import
+import ConfigParser
 import glob
+from optparse import OptionParser
 import os
 import stat
 import subprocess
 import sys
 import time
-from ConfigParser import SafeConfigParser, NoSectionError, NoOptionError
-from optparse import OptionParser
-import nose
 
 
 class Nosy(object):
@@ -22,7 +21,7 @@ class Nosy(object):
         """Return an instance with the default configuration, and a
         command line parser.
         """
-        self.config = SafeConfigParser()
+        self.config = ConfigParser.SafeConfigParser()
         self.config.add_section('nosy')
         self.config.set('nosy', 'base_path', '.')
         self.config.set('nosy', 'glob_patterns', '')
@@ -60,10 +59,9 @@ class Nosy(object):
     def _read_config(self):
         if self.config_file:
             try:
-                self.config.readfp(open(self.config_file, 'r'))
+                self.config.readfp(open(self.config_file, 'rt'))
             except IOError, msg:
-                self._opt_parser.error("can't read config file:\n %(msg)s"
-                                       % locals())
+                self._opt_parser.error("can't read config file:\n %s" % msg)
         try:
             self.base_path = self.config.get('nosy', 'base_path')
             self.glob_patterns = self.config.get(
@@ -78,10 +76,10 @@ class Nosy(object):
             # included via base_path, glob_patterns, and
             # exclude_patterns
             self.paths = self.config.get('nosy', 'paths').split()
-        except NoSectionError:
+        except ConfigParser.NoSectionError:
             self._opt_parser.error("nosy section not found in config file")
             sys.exit(1)
-        except NoOptionError:
+        except ConfigParser.NoOptionError:
             # Use default(s) from __init__()
             pass
 
@@ -114,7 +112,7 @@ class Nosy(object):
         """Run nose whenever the source files (default ./*.py) change.
 
         Re-read the configuration before each nose run so that options
-        and aruments may be changed.
+        and arguments may be changed.
         """
         val = 0
         self._read_config()
