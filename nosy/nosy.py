@@ -96,17 +96,16 @@ class Nosy(object):
                 stats = os.stat(f)
                 val += stats[stat.ST_SIZE] + stats[stat.ST_MTIME]
         for root, dirs, files in os.walk(self.base_path):
-            for dir in dirs:
-                exclusions = set()
-                for p1 in self.exclude_patterns:
-                    for f in glob.iglob(os.path.join(root, dir, p1)):
-                        exclusions.add(f)
-                    for p2 in self.glob_patterns:
-                        for f in glob.iglob(os.path.join(root, dir, p2)):
-                            if f not in exclusions:
-                                stats = os.stat(f)
-                                val += (stats[stat.ST_SIZE]
-                                        + stats[stat.ST_MTIME])
+            exclusions = set()
+            for p1 in self.exclude_patterns:
+                for f in glob.iglob(os.path.join(root, p1)):
+                    exclusions.add(f)
+            for p2 in self.glob_patterns:
+                for f in glob.iglob(os.path.join(root, p2)):
+                    if f not in exclusions:
+                        stats = os.stat(f)
+                        val += (stats[stat.ST_SIZE]
+                                + stats[stat.ST_MTIME])
         return val
 
 
