@@ -16,7 +16,7 @@ import time
 class Nosy(object):
     """Watch for changes in all source files. If changes, run nosetests.
     """
-    
+
     def __init__(self):
         """Return an instance with the default configuration, and a
         command line parser.
@@ -84,27 +84,53 @@ class Nosy(object):
             pass
 
 
-    def _checksum(self):
-        """Return a long which can be used to know if any files in the
-        paths list have changed.
+    def _calc_extra_paths_checksum(self):
+        """Return the checksum for the files given by the extra paths
+        pattern(s).
+
+        self.paths is included for backward compatibility.
         """
-        val = 0
+        checksum = 0
         for path in self.extra_paths + self.paths:
-            for f in glob.iglob(path):
-                stats = os.stat(f)
-                val += stats[stat.ST_SIZE] + stats[stat.ST_MTIME]
+            for file_path in glob.iglob(path):
+                stats = os.stat(file_path)
+                checksum += stats[stat.ST_SIZE] + stats[stat.ST_MTIME]
+        return checksum
+
+
+    def _calc_exclusions(self, root):
+        """Return a set of file paths to be excluded from the checksum
+        calculation.
+        """
+        exclusions = set()
+        for pattern in self.exclude_patterns:
+            for file_path in glob.iglob(os.path.join(root, pattern)):
+                exclusions.add(file_path)
+        return exclusions
+
+
+    def _calc_dir_checksum(self, exclusions, root):
+        """Return the checksum for the monitored files in the
+        specified directory tree.
+        """
+        checksum = 0
+        for pattern in self.glob_patterns:
+            for path in glob.iglob(os.path.join(root, pattern)):
+                if path not in exclusions:
+                    stats = os.stat(path)
+                    checksum += stats[stat.ST_SIZE] + stats[stat.ST_MTIME]
+        return checksum
+
+
+    def _checksum(self):
+        """Return a checksum which indicates if any files in the paths
+        list have changed.
+        """
+        checksum = self._calc_extra_paths_checksum()
         for root, dirs, files in os.walk(self.base_path):
-            exclusions = set()
-            for p1 in self.exclude_patterns:
-                for f in glob.iglob(os.path.join(root, p1)):
-                    exclusions.add(f)
-            for p2 in self.glob_patterns:
-                for f in glob.iglob(os.path.join(root, p2)):
-                    if f not in exclusions:
-                        stats = os.stat(f)
-                        val += (stats[stat.ST_SIZE]
-                                + stats[stat.ST_MTIME])
-        return val
+            exclusions = self._calc_exclusions(root)
+            checksum += self._calc_dir_checksum(exclusions, root)
+        return checksum
 
 
     def run(self):
@@ -113,12 +139,12 @@ class Nosy(object):
         Re-read the configuration before each nose run so that options
         and arguments may be changed.
         """
-        val = 0
+        checksum = 0
         self._read_config()
         while True:
-            if self._checksum() != val:
+            if self._checksum() != checksum:
                 self._read_config()
-                val = self._checksum()
+                checksum = self._checksum()
                 subprocess.call(
                     ['nosetests']
                     + self.nose_opts.replace('\\\n', '').split()
