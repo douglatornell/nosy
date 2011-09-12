@@ -21,7 +21,7 @@ finally:
 
 setup(
     name="nosy",
-    version="1.1",
+    version="1.1.1",
     description="""\
 Run the nose test discovery and execution tool whenever a source file
 is changed.
