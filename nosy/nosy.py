@@ -115,9 +115,9 @@ class Nosy(object):
         """
         checksum = 0
         for pattern in self.glob_patterns:
-            for path in glob.iglob(os.path.join(root, pattern)):
-                if path not in exclusions:
-                    stats = os.stat(path)
+            for file_path in glob.iglob(os.path.join(root, pattern)):
+                if file_path not in exclusions:
+                    stats = os.stat(file_path)
                     checksum += stats[stat.ST_SIZE] + stats[stat.ST_MTIME]
         return checksum
 
