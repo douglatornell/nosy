@@ -13,11 +13,10 @@ other_classifiers = [
     'Topic :: Software Development :: Testing',
     ]
 
-readme_file = open('README', 'rt')
-try:
-    detailed_description = readme_file.read()
-finally:
-    readme_file.close()
+with open('README', 'rt') as file_obj:
+    detailed_description = file_obj.read()
+with open('CHANGELOG', 'rt') as file_obj:
+    detailed_description += file_obj.read()
 
 setup(
     name="nosy",
