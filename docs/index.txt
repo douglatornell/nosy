@@ -28,7 +28,7 @@ whole lot of trouble for some little personal projects.  Jeff's trick
 for calculating a checksum for the source files makes it all very,
 *very* easy.  His original nosy.py script was less than 20 lines long!
 
-.. _buildbot: http://buildbot.net/trac
+.. _buildbot: http://trac.buildbot.net
 
 I liked ``nosy`` on sight but after playing with it for a short time
 wanted to add features and flexibility.  I like to keep my test code
@@ -113,39 +113,7 @@ Putting the config file itself in the list of files to watch
 ``nose``, used to select specific tests to run.
 
 
-Changelog
-=========
-
-v1.1 21-Mar-2011
-----------------
-
-* Configuration file now defaults to ``setup.cfg``.
-
-* New configuration options to make it easier to use ``nosy`` in
-  projects with deep directory structures. The checksum calculator now
-  uses ``os.walk()`` starting from ``base_path``, including files
-  given by a list of ``glob_patterns``, excluding those given by a
-  list of ``exclude_patterns``. Files given by the ``extra_paths``
-  list are also glob-ed in to handle anything that the first 3 options
-  don't easily catch. Thanks to Jussi Rasinmäki for the suggestion.
-       
-* The ``paths`` configuration option is retained for backward
-  compatibility only.
-
-* Changed from ``setuptools`` to ``distribute`` for packaging.
-
-* Source code and issue tracker now on bitbucket.org: https://bitbucket.org/douglatornell/nosy
-
-* Released under New BSD License.
-
-* Released on PyPI: http://pypi.python.org/pypi/nosy
-
-
-v1.0 13-Jun-2008
-----------------
-
-* Original release.
-
+.. include:: ../CHANGELOG
 
 ..
    Local Variables:
