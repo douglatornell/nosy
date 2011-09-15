@@ -3,6 +3,13 @@
 Changelog
 ---------
 
+v1.1.2 15-Sep-2011
+~~~~~~~~~~~~~~~~~~
+
+* Fix packaging errors. CHANGELOG was missing from MANIFEST.in, and
+  setup.py failed under Python 2.5 due to the use of context managers.
+
+
 v1.1.1 13-Sep-2011
 ~~~~~~~~~~~~~~~~~~
 

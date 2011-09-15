@@ -1,5 +1,4 @@
-from distribute_setup import use_setuptools
-use_setuptools()
+from __future__ import with_statement
 from setuptools import setup, find_packages
 
 version_classifiers = ['Programming Language :: Python :: %s' % version
@@ -20,7 +19,7 @@ with open('CHANGELOG', 'rt') as file_obj:
 
 setup(
     name="nosy",
-    version="1.1.1",
+    version="1.1.2",
     description="""\
 Run the nose test discovery and execution tool whenever a source file
 is changed.
