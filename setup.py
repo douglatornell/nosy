@@ -19,7 +19,7 @@ with open('CHANGELOG', 'rt') as file_obj:
 
 setup(
     name="nosy",
-    version="1.1.2",
+    version="1.2.dev",
     description="""\
 Run the nose test discovery and execution tool whenever a source file
 is changed.
@@ -31,5 +31,5 @@ is changed.
     license="New BSD License",
     classifiers=version_classifiers + other_classifiers,
     packages=find_packages(),
-    entry_points={'console_scripts':['nosy = nosy.nosy:main']}
+    entry_points={'console_scripts': ['nosy = nosy.nosy:main']}
 )
