@@ -22,6 +22,7 @@ class Nosy(object):
         """
         self.config = ConfigParser.SafeConfigParser()
         self.config.add_section('nosy')
+        self.config.set('nosy', 'test_runner', 'nosetests')
         self.config.set('nosy', 'base_path', '.')
         self.config.set('nosy', 'glob_patterns', '')
         self.config.set('nosy', 'exclude_patterns', '')
@@ -59,6 +60,7 @@ class Nosy(object):
             except IOError, msg:
                 self._opt_parser.error("can't read config file:\n %s" % msg)
         try:
+            self.test_runner = self.config.get('nosy', 'test_runner')
             self.base_path = self.config.get('nosy', 'base_path')
             self.glob_patterns = self.config.get(
                 'nosy', 'glob_patterns').split()
@@ -136,8 +138,10 @@ class Nosy(object):
             if self._checksum() != checksum:
                 self._read_config()
                 checksum = self._checksum()
+                cmd = (self.test_runner.split() if ' ' in self.test_runner
+                       else [self.test_runner])
                 subprocess.call(
-                    ['nosetests']
+                    cmd
                     + self.nose_opts.replace('\\\n', '').split()
                     + self.nose_args.replace('\\\n', '').split())
             time.sleep(1)

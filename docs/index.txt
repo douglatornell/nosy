@@ -46,7 +46,8 @@ standard library to the rescue, and we have my version of nosy::
   $ nosy -h
   Usage: nosy [options]
 
-  Automatically run nose whenever source files change.
+  Automatically run test runner (nosetests, by default) whenever
+  source files change.
 
   Options:
     -h, --help            show this help message and exit
@@ -56,6 +57,9 @@ standard library to the rescue, and we have my version of nosy::
 
 .. _ConfigParser: http://docs.python.org/lib/module-ConfigParser.html
 .. _optparse: http://docs.python.org/lib/module-optparse.html
+
+In version 1.2 ``nosy`` got generalized to run whatever test runner
+you specify, though it defaults to running ``nosetests``.
 
 You should be able to install ``nosy`` with::
 
@@ -69,22 +73,27 @@ Throw a section something like this into your ``setup.cfg`` file::
   # nose's behaviour on the fly.
 
   [nosy]
-  # Paths to check for changed files; changes cause nose to be run
+  # Test runner command to use; defaults to nosetests
+  # Other possibilites:
+  #test_runner = python manage.py test         # Django
+  #test_runner = python -m unittest discover   # Python 2.7 unittest
+  # Paths to check for changed files; changes cause test runner to be run
   base_path = ./
   glob_patterns = *.py
   exclude_patterns = *_flymake.*
   extra_paths = setup.cfg
-  # Command line options to pass to nose
+  # Command line options to pass to test runner
   options = -x
-  # Command line arguments to pass to nose; e.g. part of test suite to run
+  # Command line arguments to pass to test runner;
+  # e.g. part of test suite to run
   tests = tests/unit_tests.py
 
 launch ``nosy``::
 
   $ nosy
 
-and away you go.  ``nose`` will run whenever any of the ``*.py`` files in
-your project, or ``setup.cfg`` change.
+and away you go.  The specified test runner will run whenever any of
+the ``*.py`` files in your project, or ``setup.cfg`` change.
 
 If you prefer, you can use a separate config file just for ``nosy``,
 say ``tests/nosy.cfg``, and launch ``nosy`` with::
@@ -101,16 +110,16 @@ first 3 options don't easily catch. Thanks to Jussi Rasinmäki for the
 suggestion.
 
 Putting the config file itself in the list of files to watch
-(typically via the ``extra_paths`` option) allows you to change how
-``nose`` runs without having to stop and restart ``nosy``.
+(typically via the ``extra_paths`` option) allows you to change the
+behaviour of the test runner without having to stop and restart
+``nosy``.
 
-``options`` are the command line options to pass to
-``nose``. Use ``-v`` to turn on verbose output, or
-``-a foo`` to run only the tests with attribute
-``foo``.
+``options`` are the command line options to pass to the test
+runner. Use ``-v`` to turn on verbose output, or ``-a foo`` with
+``nosetests`` to run only the tests with attribute ``foo``.
 
-``tests`` are the command line arguments to pass to
-``nose``, used to select specific tests to run.
+``tests`` are the command line arguments to pass to the test runner,
+used to select specific tests to run.
 
 
 .. include:: ../CHANGELOG
