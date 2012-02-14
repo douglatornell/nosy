@@ -16,7 +16,6 @@ import time
 class Nosy(object):
     """Watch for changes in all source files. If changes, run nosetests.
     """
-
     def __init__(self):
         """Return an instance with the default configuration, and a
         command line parser.
@@ -35,7 +34,6 @@ class Nosy(object):
         self.config.set('nosy', 'paths', '*.py')
         self._build_cmdline_parser()
 
-
     def _build_cmdline_parser(self):
         description = 'Automatically run nose whenever source files change.'
         self._opt_parser = OptionParser(description=description)
@@ -46,7 +44,6 @@ class Nosy(object):
             help='configuration file path and name; '
                  'defaults to %(config_file)s' % defaults)
 
-
     def parse_cmdline(self):
         """Parse the command line and set the config_file attribute.
         """
@@ -54,7 +51,6 @@ class Nosy(object):
         if len(args) > 0:
             self._opt_parser.error('no arguments allowed')
         self.config_file = options.config_file
-
 
     def _read_config(self):
         if self.config_file:
@@ -83,7 +79,6 @@ class Nosy(object):
             # Use default(s) from __init__()
             pass
 
-
     def _calc_extra_paths_checksum(self):
         """Return the checksum for the files given by the extra paths
         pattern(s).
@@ -97,7 +92,6 @@ class Nosy(object):
                 checksum += stats[stat.ST_SIZE] + stats[stat.ST_MTIME]
         return checksum
 
-
     def _calc_exclusions(self, root):
         """Return a set of file paths to be excluded from the checksum
         calculation.
@@ -107,7 +101,6 @@ class Nosy(object):
             for file_path in glob.iglob(os.path.join(root, pattern)):
                 exclusions.add(file_path)
         return exclusions
-
 
     def _calc_dir_checksum(self, exclusions, root):
         """Return the checksum for the monitored files in the
@@ -121,7 +114,6 @@ class Nosy(object):
                     checksum += stats[stat.ST_SIZE] + stats[stat.ST_MTIME]
         return checksum
 
-
     def _checksum(self):
         """Return a checksum which indicates if any files in the paths
         list have changed.
@@ -131,7 +123,6 @@ class Nosy(object):
             exclusions = self._calc_exclusions(root)
             checksum += self._calc_dir_checksum(exclusions, root)
         return checksum
-
 
     def run(self):
         """Run nose whenever the source files (default ./*.py) change.

@@ -7,7 +7,7 @@ from tempfile import NamedTemporaryFile
 try:
     import unittest2 as unittest
 except ImportError:
-    import unittest
+    import unittest                     # NOQA
 
 
 class TestNosy(unittest.TestCase):
@@ -17,10 +17,8 @@ class TestNosy(unittest.TestCase):
         from nosy.nosy import Nosy
         return Nosy
 
-
     def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
-
 
     def test_extra_paths_empty(self):
         """Zero checksum when extra_paths is empty
@@ -31,7 +29,6 @@ class TestNosy(unittest.TestCase):
         checksum = nosy._calc_extra_paths_checksum()
         self.assertEqual(checksum, 0)
 
-
     def test_extra_paths_checksum(self):
         """Non-zero checksum when extra_paths is not empty
         """
@@ -41,7 +38,6 @@ class TestNosy(unittest.TestCase):
         nosy.paths = []  # backward compatibility for 1.0
         checksum = nosy._calc_extra_paths_checksum()
         self.assertNotEqual(checksum, 0)
-
 
     def test_extra_paths_checksum_changes(self):
         """Extra paths checksum changes when file is touched
@@ -56,7 +52,6 @@ class TestNosy(unittest.TestCase):
         checksum2 = nosy._calc_extra_paths_checksum()
         self.assertNotEqual(checksum1, checksum2)
 
-
     def test_exclude_patterns_empty(self):
         """Empty exclusions set when exclude_patterns is empty
         """
@@ -64,7 +59,6 @@ class TestNosy(unittest.TestCase):
         nosy.exclude_patterns = []
         exclusions = nosy._calc_exclusions('.')
         self.assertItemsEqual(exclusions, set())
-
 
     def test_exclude_patterns(self):
         """Expected exclusions set when exclude_patterns is not empty
@@ -75,7 +69,6 @@ class TestNosy(unittest.TestCase):
         self.assertItemsEqual(
             exclusions, set(['./nosy/__init__.py', './nosy/nosy.py']))
 
-
     def test_dir_checksum_glob_patterns_empty(self):
         """Zero checksum when glob_patterns is empty
         """
@@ -83,7 +76,6 @@ class TestNosy(unittest.TestCase):
         nosy.glob_patterns = []
         checksum = nosy._calc_dir_checksum([], '.')
         self.assertEqual(checksum, 0)
-
 
     def test_dir_checksum_glob_patterns_no_match(self):
         """Zero checksum when glob pattern doesn't match
@@ -95,7 +87,6 @@ class TestNosy(unittest.TestCase):
         checksum = nosy._calc_dir_checksum([], root)
         self.assertEqual(checksum, 0)
 
-
     def test_dir_checksum_glob_patterns_match(self):
         """Non-zero checksum when file matching glob pattern exists in dir
         """
@@ -105,7 +96,6 @@ class TestNosy(unittest.TestCase):
         root = os.path.dirname(tmp_file.name)
         checksum = nosy._calc_dir_checksum([], root)
         self.assertNotEqual(checksum, 0)
-
 
     def test_dir_checksum_changes(self):
         """Checksum changes when file is touched
@@ -120,7 +110,6 @@ class TestNosy(unittest.TestCase):
         checksum2 = nosy._calc_dir_checksum([], root)
         self.assertNotEqual(checksum1, checksum2)
 
-
     def test_dir_checksum_changes_when_file_excluded(self):
         """Checksum changes when a file is excluded
         """
@@ -132,7 +121,6 @@ class TestNosy(unittest.TestCase):
         checksum1 = nosy._calc_dir_checksum([], root)
         checksum2 = nosy._calc_dir_checksum([tmp_file2.name], root)
         self.assertNotEqual(checksum1, checksum2)
-
 
     def test_checksum_method_calls(self):
         """Number of calls & args from _checksum is as expected
