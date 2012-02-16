@@ -1,6 +1,5 @@
-#!/usr/bin/env python
 """Watch for changes in a collection of source files. If changes, run
-nosetests.
+the specified test runnder (nosetests, by default).
 """
 from __future__ import absolute_import
 import ConfigParser
@@ -14,7 +13,8 @@ import time
 
 
 class Nosy(object):
-    """Watch for changes in all source files. If changes, run nosetests.
+    """Watch for changes in all source files. If changes, run the
+    specified test runner (nosetests, by default).
     """
     def __init__(self):
         """Return an instance with the default configuration, and a
@@ -67,8 +67,8 @@ class Nosy(object):
             self.exclude_patterns = self.config.get(
                 'nosy', 'exclude_patterns').split()
             self.extra_paths = self.config.get('nosy', 'extra_paths').split()
-            self.nose_opts = self.config.get('nosy', 'options')
-            self.nose_args = self.config.get('nosy', 'tests')
+            self.cmd_opts = self.config.get('nosy', 'options')
+            self.cmd_args = self.config.get('nosy', 'tests')
             # paths config retained for backward compatibility; use
             # extra_paths for any files or paths that aren't easily
             # included via base_path, glob_patterns, and
@@ -127,10 +127,11 @@ class Nosy(object):
         return checksum
 
     def run(self):
-        """Run nose whenever the source files (default ./*.py) change.
+        """Run specified test runner (default nosetests) whenever the
+        source files (default ./*.py) change.
 
-        Re-read the configuration before each nose run so that options
-        and arguments may be changed.
+        Re-read the configuration before each run so that options and
+        arguments may be changed.
         """
         checksum = 0
         self._read_config()
@@ -142,8 +143,8 @@ class Nosy(object):
                        else [self.test_runner])
                 subprocess.call(
                     cmd
-                    + self.nose_opts.replace('\\\n', '').split()
-                    + self.nose_args.replace('\\\n', '').split())
+                    + self.cmd_opts.replace('\\\n', '').split()
+                    + self.cmd_args.replace('\\\n', '').split())
             time.sleep(1)
 
 

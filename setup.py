@@ -21,8 +21,8 @@ setup(
     name="nosy",
     version="1.2.dev",
     description="""\
-Run the nose test discovery and execution tool whenever a source file
-is changed.
+Run a specified command (by default, the nose test discovery and
+execution tool) whenever a source file is changed.
     """,
     long_description=detailed_description,
     author="Doug Latornell",
