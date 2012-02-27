@@ -128,10 +128,14 @@ class Nosy(object):
                 checksum = self._checksum()
                 cmd = (self.test_runner.split() if ' ' in self.test_runner
                        else [self.test_runner])
-                subprocess.call(
-                    cmd
-                    + self.cmd_opts.replace('\\\n', '').split()
-                    + self.cmd_args.replace('\\\n', '').split())
+                try:
+                    subprocess.call(
+                        cmd
+                        + self.cmd_opts.replace('\\\n', '').split()
+                        + self.cmd_args.replace('\\\n', '').split())
+                except OSError, msg:
+                    sys.stderr.write('Command error: %s: %s\n' % (msg, cmd))
+                    sys.exit(2)
             time.sleep(1)
 
 
