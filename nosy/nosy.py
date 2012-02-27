@@ -1,10 +1,9 @@
 """Watch for changes in a collection of source files. If changes, run
-the specified test runnder (nosetests, by default).
+the specified test runner (nosetests, by default).
 """
-from __future__ import absolute_import
+from argparse import ArgumentParser
 import ConfigParser
 import glob
-from optparse import OptionParser
 import os
 import stat
 import subprocess
@@ -36,50 +35,38 @@ class Nosy(object):
         self._build_cmdline_parser()
 
     def _build_cmdline_parser(self):
-        description = 'Automatically run nose whenever source files change.'
-        self._opt_parser = OptionParser(description=description)
-        defaults = dict(config_file='setup.cfg')
-        self._opt_parser.set_defaults(**defaults)
-        self._opt_parser.add_option(
-            '-c', '--config', action='store', dest='config_file',
-            help='configuration file path and name; '
-                 'defaults to %(config_file)s' % defaults)
+        self.parser = ArgumentParser(
+            description='Automatically run a command (nosetest, by default) '
+                        'whenever source files change.')
+        self.parser.add_argument(
+            '-c', '--config', dest='config_file', default='setup.cfg',
+            help='configuration file path and name; defaults to %(default)s')
 
     def parse_cmdline(self):
         """Parse the command line and set the config_file attribute.
         """
-        options, args = self._opt_parser.parse_args()
-        if len(args) > 0:
-            self._opt_parser.error('no arguments allowed')
-        self.config_file = options.config_file
+        args = self.parser.parse_args()
+        self.config_file = args.config_file
 
     def _read_config(self):
-        if self.config_file:
-            try:
-                self.config.readfp(open(self.config_file, 'rt'))
-            except IOError, msg:
-                self._opt_parser.error("can't read config file:\n %s" % msg)
         try:
-            self.test_runner = self.config.get('nosy', 'test_runner')
-            self.base_path = self.config.get('nosy', 'base_path')
-            self.glob_patterns = self.config.get(
-                'nosy', 'glob_patterns').split()
-            self.exclude_patterns = self.config.get(
-                'nosy', 'exclude_patterns').split()
-            self.extra_paths = self.config.get('nosy', 'extra_paths').split()
-            self.cmd_opts = self.config.get('nosy', 'options')
-            self.cmd_args = self.config.get('nosy', 'tests')
-            # paths config retained for backward compatibility; use
-            # extra_paths for any files or paths that aren't easily
-            # included via base_path, glob_patterns, and
-            # exclude_patterns
-            self.paths = self.config.get('nosy', 'paths').split()
-        except ConfigParser.NoSectionError:
-            self._opt_parser.error("nosy section not found in config file")
-            sys.exit(1)
-        except ConfigParser.NoOptionError:
-            # Use default(s) from __init__()
-            pass
+            self.config.readfp(open(self.config_file, 'rt'))
+        except IOError, msg:
+            self.parser.error("can't read config file:\n %s" % msg)
+        self.test_runner = self.config.get('nosy', 'test_runner')
+        self.base_path = self.config.get('nosy', 'base_path')
+        self.glob_patterns = self.config.get(
+            'nosy', 'glob_patterns').split()
+        self.exclude_patterns = self.config.get(
+            'nosy', 'exclude_patterns').split()
+        self.extra_paths = self.config.get('nosy', 'extra_paths').split()
+        self.cmd_opts = self.config.get('nosy', 'options')
+        self.cmd_args = self.config.get('nosy', 'tests')
+        # paths config retained for backward compatibility; use
+        # extra_paths for any files or paths that aren't easily
+        # included via base_path, glob_patterns, and
+        # exclude_patterns
+        self.paths = self.config.get('nosy', 'paths').split()
 
     def _calc_extra_paths_checksum(self):
         """Return the checksum for the files given by the extra paths
