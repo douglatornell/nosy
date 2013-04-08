@@ -2,7 +2,10 @@
 the specified test runner (nosetests, by default).
 """
 from argparse import ArgumentParser
-import ConfigParser
+try:
+    import configparser as ConfigParser
+except ImportError:
+    import ConfigParser
 import glob
 import os
 import stat
@@ -51,7 +54,7 @@ class Nosy(object):
     def _read_config(self):
         try:
             self.config.readfp(open(self.config_file, 'rt'))
-        except IOError, msg:
+        except IOError as msg:
             self.parser.error("can't read config file:\n %s" % msg)
         self.test_runner = self.config.get('nosy', 'test_runner')
         self.base_path = self.config.get('nosy', 'base_path')
@@ -133,7 +136,7 @@ class Nosy(object):
                         cmd
                         + self.cmd_opts.replace('\\\n', '').split()
                         + self.cmd_args.replace('\\\n', '').split())
-                except OSError, msg:
+                except OSError as msg:
                     sys.stderr.write('Command error: %s: %s\n' % (msg, cmd))
                     sys.exit(2)
             time.sleep(1)
