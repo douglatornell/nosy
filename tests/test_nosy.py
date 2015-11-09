@@ -134,6 +134,6 @@ class TestNosy(unittest.TestCase):
         nosy._calc_exclusions = Mock(return_value=[])
         nosy._calc_dir_checksum = Mock(return_value=0)
         nosy._checksum()
-        nosy._calc_extra_paths_checksum.assert_called_once()
+        nosy._calc_extra_paths_checksum.assert_called_once_with()
         nosy._calc_exclusions.assert_called_once_with('./nosy')
         nosy._calc_dir_checksum.assert_called_once_with([], './nosy')
