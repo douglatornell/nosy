@@ -6,17 +6,15 @@ Hacking on Jeff Winkler's Nosy
 I discovered Jason Pellerin's `nose`_ test discovery and execution
 tool when I started using `TurboGears`_.  My first forays into test
 driven development and automated Python testing weren't all that
-successful though.  Then `this talk`_ by `Jonathan Hartley`_, and `this
-one`_ by `Titus Brown`_ at PyCon 2008, and a lobby chat with Jonathan
+successful though.  Then talks by `Jonathan Hartley`_,
+and by `Titus Brown`_ at PyCon 2008, and a lobby chat with Jonathan
 just before I left Chicago got me thinking differently, and more
 seriously about automated testing.  A few days later, the penny
 dropped, and I'm a convert!
 
-.. _nose: http://www.somethingaboutorange.com/mrl/projects/nose/
+.. _nose: https://nose.readthedocs.org/en/latest/
 .. _TurboGears: http://turbogears.org/
-.. _this talk: http://us.pycon.org/2008/conference/schedule/event/53/
 .. _Jonathan Hartley: http://tartley.com/
-.. _this one: http://us.pycon.org/2008/conference/schedule/event/83/
 .. _Titus Brown: http://ivory.idyll.org/blog
 
 Then I came across a little script called ``nosy`` that Jeff Winkler
@@ -58,8 +56,16 @@ standard library to the rescue, and we have my version of nosy::
 .. _ConfigParser: http://docs.python.org/lib/module-ConfigParser.html
 .. _optparse: http://docs.python.org/lib/module-optparse.html
 
-In version 1.2 ``nosy`` got generalized to run whatever test runner
-you specify, though it defaults to running ``nosetests``.
+In version 1.2 ``nosy``
+
+* got generalized to run whatever test runner you specify,
+  though it defaults to running ``nosetests``
+
+* changed from `optparse`_ to `argparse`_ for command line processing
+
+* added support for Python 3.3, 3.4, and 3.5.
+
+.. _argparse: https://docs.python.org/3/library/argparse.html
 
 You should be able to install ``nosy`` with::
 

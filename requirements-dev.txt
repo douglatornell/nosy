@@ -1,6 +1,6 @@
 # Pip requirements file for nosy development
 
-docutils==0.8.1
+docutils==0.12
 nose==1.3.7
 
 # mock is only required for Python 2.6,
