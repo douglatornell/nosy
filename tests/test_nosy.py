@@ -1,7 +1,10 @@
 """Unit tests for nosy.
 """
 from __future__ import absolute_import
-from mock import Mock
+try:
+    from mock import Mock
+except ImportError:
+    from unittest.mock import Mock
 import os
 from tempfile import NamedTemporaryFile
 try:
