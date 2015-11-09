@@ -2,8 +2,12 @@ from __future__ import with_statement
 from setuptools import setup, find_packages
 import sys
 
-version_classifiers = ['Programming Language :: Python :: %s' % version
-                       for version in ['2', '2.5', '2.6', '2.7']]
+version_classifiers = [
+    'Programming Language :: Python :: %s' % version
+    for version in [
+        '2', '2.5', '2.6', '2.7',
+        '3', '3.3', '3.4', '3.5',
+    ]]
 other_classifiers = [
     'Development Status :: 5 - Production/Stable',
     'License :: OSI Approved :: BSD License',

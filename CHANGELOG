@@ -6,6 +6,10 @@ Changelog
 v1.2.dev
 ~~~~~~~~
 
+* Add support for Python 3.3, 3.4, and 3.5.
+  Thanks to @ronnix and @StefanWiechula for pull requests,
+  and to @jacebrowning for in-use testing.
+
 * Fix test suite issues re: multiple Python versions.
 
 * Add ``test_runner`` option in the config file to specify the test
