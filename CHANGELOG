@@ -6,6 +6,8 @@ Changelog
 v1.2.dev
 ~~~~~~~~
 
+* Fix test suite issues re: multiple Python versions.
+
 * Add ``test_runner`` option in the config file to specify the test
   runner command to use; defaults to ``nosetests``.
 

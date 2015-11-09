@@ -58,7 +58,7 @@ class TestNosy(unittest.TestCase):
         nosy = self._make_one()
         nosy.exclude_patterns = []
         exclusions = nosy._calc_exclusions('.')
-        self.assertItemsEqual(exclusions, set())
+        self.assertEqual(exclusions, set())
 
     def test_exclude_patterns(self):
         """Expected exclusions set when exclude_patterns is not empty
@@ -66,7 +66,7 @@ class TestNosy(unittest.TestCase):
         nosy = self._make_one()
         nosy.exclude_patterns = ['*.py']
         exclusions = nosy._calc_exclusions('./nosy')
-        self.assertItemsEqual(
+        self.assertEqual(
             exclusions, set(['./nosy/__init__.py', './nosy/nosy.py']))
 
     def test_dir_checksum_glob_patterns_empty(self):
