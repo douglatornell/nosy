@@ -47,7 +47,7 @@ class TestNosy(unittest.TestCase):
         nosy.extra_paths = [tmp_file.name]
         nosy.paths = []  # backward compatibility for 1.0
         checksum1 = nosy._calc_extra_paths_checksum()
-        tmp_file.write('foobar')
+        tmp_file.write('foobar'.encode('ASCII'))
         tmp_file.flush()
         checksum2 = nosy._calc_extra_paths_checksum()
         self.assertNotEqual(checksum1, checksum2)
@@ -105,7 +105,7 @@ class TestNosy(unittest.TestCase):
         tmp_file = NamedTemporaryFile()
         root = os.path.dirname(tmp_file.name)
         checksum1 = nosy._calc_dir_checksum([], root)
-        tmp_file.write('foobar')
+        tmp_file.write('foobar'.encode('ASCII'))
         tmp_file.flush()
         checksum2 = nosy._calc_dir_checksum([], root)
         self.assertNotEqual(checksum1, checksum2)
