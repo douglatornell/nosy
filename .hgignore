@@ -1,6 +1,8 @@
 syntax: glob
 *~
 *.pyc
+.tox/
+.vagrant/
 nosy.egg-info/*
 build/*
 dist/*
