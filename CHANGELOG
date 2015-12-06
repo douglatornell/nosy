@@ -3,8 +3,8 @@
 Changelog
 ---------
 
-v1.2.dev
-~~~~~~~~
+v1.2 6-Dec-2015
+~~~~~~~~~~~~~~~
 
 * Change exception handling to preserve backward compatibility with
   Python 2.5.

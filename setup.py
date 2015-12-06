@@ -29,7 +29,7 @@ if (sys.version_info[0] == 2 and sys.version_info[1] < 7
 
 setup(
     name="nosy",
-    version="1.2.dev",
+    version="1.2",
     description="""\
 Run a specified command (by default, the nose test discovery and
 execution tool) whenever a source file is changed.
