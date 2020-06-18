@@ -1,7 +1,12 @@
-.. -*- coding: utf-8 -*-
-
 Nosy
 ====
+
+This is an read-only **ARCHIVAL** repository.
+It was migrated here from Mercurial on Bitbucket due to Bitbucket's termination of Mercurial support
+and deletion of all Mercurial repositories in mid-2020.
+This project is no longer maintained.
+I now recommend using pytest as a test runner,
+and editor features or a pytest plugin to run pytest whenever a source file changes.
 
 
 Introduction
